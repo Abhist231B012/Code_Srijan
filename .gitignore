@@ -1,0 +1,118 @@
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+*.so
+
+# ── Virtual environments ───────────────────────────────────────────────────────
+venv/
+.venv/
+env/
+ENV/
+.env.bak
+
+# ── Environment variables (NEVER commit secrets) ──────────────────────────────
+.env
+.env.local
+.env.production
+.env.staging
+!.env.example
+
+# ── ML model files (too large for git — use DVC or cloud storage) ─────────────
+models/*.pkl
+models/*.joblib
+models/*.h5
+models/*.pt
+models/*.pth
+models/*.onnx
+
+# ── Training data (large CSV files) ───────────────────────────────────────────
+*.csv
+*.parquet
+*.feather
+data/
+
+# ── Jupyter notebooks outputs and checkpoints ─────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb
+
+# ── EDA and model output charts ───────────────────────────────────────────────
+*.png
+*.jpg
+*.jpeg
+*.pdf
+
+# ── pytest ────────────────────────────────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+*.coveragerc
+
+# ── mypy ──────────────────────────────────────────────────────────────────────
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# ── Ruff / Black / isort ──────────────────────────────────────────────────────
+.ruff_cache/
+
+# ── Build artifacts ───────────────────────────────────────────────────────────
+build/
+dist/
+*.egg-info/
+*.egg
+MANIFEST
+
+# ── Docker ────────────────────────────────────────────────────────────────────
+.dockerignore
+
+# ── Database ──────────────────────────────────────────────────────────────────
+*.db
+*.sqlite
+*.sqlite3
+
+# ── Alembic generated SQL scripts (optional — remove if you want to track) ────
+migrations/versions/*.sql
+
+# ── Logs ──────────────────────────────────────────────────────────────────────
+*.log
+logs/
+log/
+
+# ── OS files ──────────────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# ── IDE files ─────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# ── Node (if you add a frontend later) ────────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ── Temporary files ───────────────────────────────────────────────────────────
+tmp/
+temp/
+.tmp/
+*.tmp
+*.bak
+*.backup
