@@ -1,0 +1,69 @@
+version: "3.9"
+
+services:
+
+  # ── PostgreSQL Database ──────────────────────────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    container_name: credit_scoring_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: credit_user
+      POSTGRES_PASSWORD: credit_pass
+      POSTGRES_DB: credit_scoring_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U credit_user -d credit_scoring_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── FastAPI Backend ──────────────────────────────────────────────────────────
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+    container_name: credit_scoring_api
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://credit_user:credit_pass@db:5432/credit_scoring_db
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount models directory so you can swap .pkl files without rebuilding
+      - ./models:/app/models:ro
+      # Persist audit logs on the host
+      - ./logs:/app/logs
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+  # ── pgAdmin (optional, for DB inspection) ───────────────────────────────────
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: credit_pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@creditscoring.local
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+    profiles:
+      - dev   # only starts with: docker compose --profile dev up
+
+volumes:
+  postgres_data:
